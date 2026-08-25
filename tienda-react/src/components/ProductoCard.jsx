@@ -1,28 +1,82 @@
 function ProductoCard({ producto }) {
-  const estaDisponible = producto.stock > 0;
-  const estadoTexto = estaDisponible ? 'Disponible' : 'Agotado';
-  const estadoClase = estaDisponible ? 'badge disponible' : 'badge agotado';
+  const {
+    nombre,
+    precio,
+    categoria,
+    stock,
+    imagen
+  } = producto;
+
+  const estado =
+    stock > 0
+      ? "Disponible"
+      : "Agotado";
+
+  const mostrarProducto = () => {
+    alert(`Seleccionaste ${nombre}`);
+  };
+
+  const formatearPrecio = (precio) => {
+    return precio.toLocaleString("es-CO");
+  };
 
   return (
     <article className="producto-card">
+
       <div className="imagen-contenedor">
-        <img src={producto.imagen} alt={producto.nombre} className="producto-imagen" />
-        <span className={estadoClase}>{estadoTexto}</span>
+        <img
+          src={imagen}
+          alt={nombre}
+          className="producto-imagen"
+        />
+
+        <span
+          className={
+            stock > 0
+              ? "badge disponible"
+              : "badge agotado"
+          }
+        >
+          {estado}
+        </span>
       </div>
-      
+
       <div className="producto-info">
-        <span className="categoria-tag">{producto.categoria}</span>
-        <h3 className="producto-titulo">{producto.nombre}</h3>
-        
+
+        <span className="categoria-tag">
+          {categoria}
+        </span>
+
+        <h3 className="producto-titulo">
+          {nombre}
+        </h3>
+
         <div className="producto-footer">
-          <p className="producto-precio">${producto.precio.toLocaleString()}</p>
-          <p className="producto-stock">Stock: {producto.stock}</p>
+
+          <p className="producto-precio">
+            ${formatearPrecio(precio)}
+          </p>
+
+          <p className="producto-stock">
+            Stock: {stock}
+          </p>
+
         </div>
-        
-        <button className="btn-comprar" disabled={!estaDisponible}>
-          {estaDisponible ? 'Comprar' : 'Sin Stock'}
+
+        <button
+          className="btn-comprar"
+          onClick={mostrarProducto}
+          disabled={stock === 0}
+        >
+          {
+            stock > 0
+              ? "Ver producto"
+              : "Agotado"
+          }
         </button>
+
       </div>
+
     </article>
   );
 }
