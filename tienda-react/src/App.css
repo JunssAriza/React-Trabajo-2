@@ -195,3 +195,104 @@ hr {
   border: 0;
   border-top: 1px dashed #cbd5e1;
 }
+
+/* Barra de búsqueda */
+input[type="text"] {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 18px;
+  margin: 10px 0 20px;
+
+  border: 2px solid #ddd;
+  border-radius: 12px;
+
+  font-size: 16px;
+  outline: none;
+
+  background-color: #ffffff;
+  color: #333;
+
+  transition: all 0.3s ease;
+}
+
+/* Cuando haces clic en la barra */
+input[type="text"]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+/* Texto del placeholder */
+input[type="text"]::placeholder {
+  color: #999;
+}
+
+/* Efecto al pasar el mouse */
+input[type="text"]:hover {
+  border-color: #999;
+}
+
+/* Botón limpiar filtros */
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Botón específico para limpiar filtros */
+button:not(.btn-comprar) {
+  background-color: #4f46e5;
+  color: white;
+  margin: 10px;
+}
+
+button:not(.btn-comprar):hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+}
+
+button:not(.btn-comprar):active {
+  transform: translateY(0);
+}
+
+/* Selector de categorías */
+select {
+  padding: 13px 40px 13px 16px;
+  margin: 10px;
+  
+  border: 2px solid #ddd;
+  border-radius: 10px;
+
+  background-color: white;
+  color: #333;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  cursor: pointer;
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+/* Cuando seleccionamos una categoría */
+select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+/* Al pasar el mouse */
+select:hover {
+  border-color: #999;
+}
+
+/* Opciones */
+select option {
+  padding: 10px;
+  background-color: white;
+  color: #333;
+}
