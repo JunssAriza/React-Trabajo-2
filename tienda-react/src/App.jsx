@@ -16,6 +16,26 @@ function App() {
     ]);
   };
 
+  // Misión 6: Función para eliminar producto
+  const eliminarProducto = (id) => {
+    const nuevaLista = productos.filter(producto => producto.id !== id);
+    setProductos(nuevaLista);
+  };
+
+  // Misión 7: Función para modificar el stock (evitando valores negativos)
+  const modificarStock = (id, cambio) => {
+    const nuevosProductos = productos.map(producto => {
+      if (producto.id === id) {
+        return {
+          ...producto,
+          stock: Math.max(0, producto.stock + cambio)
+        };
+      }
+      return producto;
+    });
+    setProductos(nuevosProductos);
+  };
+
   // Estado del buscador
   const [busqueda, setBusqueda] = useState("");
 
@@ -40,7 +60,7 @@ function App() {
     return coincideNombre && coincideCategoria && coincideStock;
   });
 
-  // CALCULAMOS EL RESUMEN
+  // Misión 8: TABLERO DINÁMICO (calculado dinámicamente según el estado/filtros)
   const disponibles = productosFiltrados.filter(
     producto => producto.stock > 0
   );
@@ -80,7 +100,7 @@ function App() {
         />
       </div>
 
-      {/* RESUMEN DEL INVENTARIO */}
+      {/* RESUMEN DEL INVENTARIO (Misión 8) */}
       <div className="resumen-panel">
         <div className="resumen-item">
           <span className="resumen-label">
@@ -180,12 +200,14 @@ function App() {
         <p>No se encontraron productos.</p>
       ) : null}
 
-      {/* CATÁLOGO FILTRADO */}
+      {/* CATÁLOGO FILTRADO (Misiones 6 y 7 pasando props) */}
       <section className="productos">
         {productosFiltrados.map(producto => (
           <ProductoCard
             key={producto.id}
             producto={producto}
+            onEliminar={eliminarProducto}
+            onModificarStock={modificarStock}
           />
         ))}
       </section>
