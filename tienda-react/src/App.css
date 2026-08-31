@@ -1,298 +1,76 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* =========================================
+   ESTILOS DEL FORMULARIO DE AGREGAR PRODUCTO
+   ========================================= */
+
+.formulario-agregar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-body {
-  background-color: #f8fafc;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #1e293b;
-}
-
-.contenedor {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 16px;
-}
-
-h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
+.formulario-titulo {
+  margin: 0 0 10px 0;
   color: #0f172a;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-h2 {
   font-size: 1.5rem;
-  color: #334155;
-  margin: 32px 0 16px 0;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
 }
 
-/* Panel informativo */
-.resumen-panel {
+/* Usamos Grid para poner los inputs en 2 columnas */
+.formulario-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  margin-bottom: 32px;
 }
 
-.resumen-item {
+.campo-formulario {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
-.resumen-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.resumen-valor {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0284c7;
-}
-
-.alerta-agotados {
-  grid-column: 1 / -1;
-  background-color: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
-  padding: 10px 14px;
-  border-radius: 8px;
+.campo-formulario label {
   font-size: 0.875rem;
   font-weight: 600;
+  color: #475569;
 }
 
-/* Grilla de productos */
-.productos {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-}
-
-/* Tarjeta de producto */
-.producto-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.producto-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.imagen-contenedor {
-  position: relative;
+/* Ajustes específicos para los inputs de este formulario */
+.campo-formulario input {
   width: 100%;
-  height: 180px;
-  background-color: #f1f5f9;
+  max-width: 100%;
+  margin: 0; /* Quitamos el margen global de los inputs */
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  background-color: #f8fafc;
 }
 
-.producto-imagen {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.badge.disponible {
-  background-color: #dcfce7;
-  color: #15803d;
-}
-
-.badge.agotado {
-  background-color: #fee2e2;
-  color: #b91c1c;
-}
-
-.producto-info {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.categoria-tag {
-  font-size: 0.75rem;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.producto-titulo {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 12px;
-}
-
-.producto-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  margin-bottom: 12px;
-}
-
-.producto-precio {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.producto-stock {
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.btn-comprar {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background-color: #0284c7;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-comprar:hover:not(:disabled) {
-  background-color: #0369a1;
-}
-
-.btn-comprar:disabled {
-  background-color: #cbd5e1;
-  cursor: not-allowed;
-}
-
-hr {
-  margin: 48px 0;
-  border: 0;
-  border-top: 1px dashed #cbd5e1;
-}
-
-/* Barra de búsqueda */
-input[type="text"] {
-  width: 100%;
-  max-width: 500px;
-  padding: 14px 18px;
-  margin: 10px 0 20px;
-
-  border: 2px solid #ddd;
-  border-radius: 12px;
-
-  font-size: 16px;
-  outline: none;
-
+.campo-formulario input:focus {
   background-color: #ffffff;
-  color: #333;
-
-  transition: all 0.3s ease;
+  border-color: #0284c7;
 }
 
-/* Cuando haces clic en la barra */
-input[type="text"]:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-}
-
-/* Texto del placeholder */
-input[type="text"]::placeholder {
-  color: #999;
-}
-
-/* Efecto al pasar el mouse */
-input[type="text"]:hover {
-  border-color: #999;
-}
-
-/* Botón limpiar filtros */
-button {
+/* Botón llamativo para agregar */
+.btn-agregar {
+  background-color: #10b981; /* Verde esmeralda */
+  color: white;
+  padding: 14px;
   border: none;
   border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  margin: 10px 0 0 0 !important;
+  width: 100%;
 }
 
-/* Botón específico para limpiar filtros */
-button:not(.btn-comprar) {
-  background-color: #4f46e5;
-  color: white;
-  margin: 10px;
-}
-
-button:not(.btn-comprar):hover {
-  background-color: #3730a3;
+.btn-agregar:hover {
+  background-color: #059669;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-button:not(.btn-comprar):active {
+.btn-agregar:active {
   transform: translateY(0);
-}
-
-/* Selector de categorías */
-select {
-  padding: 13px 40px 13px 16px;
-  margin: 10px;
-  
-  border: 2px solid #ddd;
-  border-radius: 10px;
-
-  background-color: white;
-  color: #333;
-
-  font-size: 15px;
-  font-weight: 500;
-
-  cursor: pointer;
-  outline: none;
-
-  transition: all 0.3s ease;
-}
-
-/* Cuando seleccionamos una categoría */
-select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-}
-
-/* Al pasar el mouse */
-select:hover {
-  border-color: #999;
-}
-
-/* Opciones */
-select option {
-  padding: 10px;
-  background-color: white;
-  color: #333;
 }
