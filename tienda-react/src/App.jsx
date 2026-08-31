@@ -1,12 +1,20 @@
 import { useState } from "react";
 import ProductoCard from "./components/ProductoCard";
-import FormularioProducto from "./components/FormularioProducto"; // Importamos el nuevo componente
-import { productos as productosIniciales } from "./data/productos"; // Cambio Misión 2
+import FormularioProducto from "./components/FormularioProducto";
+import { productos as productosIniciales } from "./data/productos";
 import "./App.css";
 
 function App() {
   // Misión 2: Convertimos los productos en estado
   const [productos, setProductos] = useState(productosIniciales);
+
+  // Misión 5: Función para agregar nuevos productos
+  const agregarProducto = (nuevoProducto) => {
+    setProductos([
+      ...productos,
+      nuevoProducto
+    ]);
+  };
 
   // Estado del buscador
   const [busqueda, setBusqueda] = useState("");
@@ -17,7 +25,7 @@ function App() {
   // Estado para mostrar solamente disponibles
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
-  // 1. FILTRAMOS LOS PRODUCTOS (ahora usando el estado 'productos')
+  // FILTRAMOS LOS PRODUCTOS
   const productosFiltrados = productos.filter(producto => {
     const coincideNombre = producto.nombre
       .toLowerCase()
@@ -26,12 +34,13 @@ function App() {
     const coincideCategoria =
       categoria === "Todas" || producto.categoria === categoria;
 
-    const coincideStock = !soloDisponibles || producto.stock > 0;
+    const coincideStock =
+      !soloDisponibles || producto.stock > 0;
 
     return coincideNombre && coincideCategoria && coincideStock;
   });
 
-  // 2. CALCULAMOS EL RESUMEN BASÁNDONOS EN LOS PRODUCTOS FILTRADOS
+  // CALCULAMOS EL RESUMEN
   const disponibles = productosFiltrados.filter(
     producto => producto.stock > 0
   );
@@ -56,30 +65,54 @@ function App() {
     <main className="contenedor">
       <h1>🛒 Tienda Tecnológica</h1>
 
-      {/* RENDERIZAMOS EL NUEVO FORMULARIO AQUÍ */}
-      <div style={{ marginBottom: '32px', padding: '20px', background: 'white', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
-        <FormularioProducto />
+      {/* FORMULARIO PARA AGREGAR PRODUCTOS */}
+      <div
+        style={{
+          marginBottom: "32px",
+          padding: "20px",
+          background: "white",
+          borderRadius: "12px",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
+        }}
+      >
+        <FormularioProducto
+          onAgregar={agregarProducto}
+        />
       </div>
 
       {/* RESUMEN DEL INVENTARIO */}
       <div className="resumen-panel">
         <div className="resumen-item">
-          <span className="resumen-label">Total Productos</span>
-          <span className="resumen-valor">{productosFiltrados.length}</span>
+          <span className="resumen-label">
+            Total Productos
+          </span>
+          <span className="resumen-valor">
+            {productosFiltrados.length}
+          </span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">Disponibles</span>
-          <span className="resumen-valor">{disponibles.length}</span>
+          <span className="resumen-label">
+            Disponibles
+          </span>
+          <span className="resumen-valor">
+            {disponibles.length}
+          </span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">Agotados</span>
-          <span className="resumen-valor">{productosAgotados.length}</span>
+          <span className="resumen-label">
+            Agotados
+          </span>
+          <span className="resumen-valor">
+            {productosAgotados.length}
+          </span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">Valor del Inventario</span>
+          <span className="resumen-label">
+            Valor del Inventario
+          </span>
           <span className="resumen-valor">
             ${valorInventario.toLocaleString("es-CO")}
           </span>
@@ -108,7 +141,9 @@ function App() {
       {/* FILTRO POR CATEGORÍA */}
       <select
         value={categoria}
-        onChange={(evento) => setCategoria(evento.target.value)}
+        onChange={(evento) =>
+          setCategoria(evento.target.value)
+        }
       >
         <option value="Todas">Todas</option>
         <option value="Periféricos">Periféricos</option>
@@ -123,16 +158,22 @@ function App() {
         <input
           type="checkbox"
           checked={soloDisponibles}
-          onChange={(evento) => setSoloDisponibles(evento.target.checked)}
+          onChange={(evento) =>
+            setSoloDisponibles(evento.target.checked)
+          }
         />
         Mostrar únicamente disponibles
       </label>
 
       {/* BOTÓN LIMPIAR */}
-      <button onClick={limpiarFiltros}>Limpiar filtros</button>
+      <button onClick={limpiarFiltros}>
+        Limpiar filtros
+      </button>
 
       {/* CONTADOR TEXTUAL */}
-      <p>Productos encontrados: {productosFiltrados.length}</p>
+      <p>
+        Productos encontrados: {productosFiltrados.length}
+      </p>
 
       {/* MENSAJE SI NO HAY RESULTADOS */}
       {productosFiltrados.length === 0 ? (
@@ -142,7 +183,10 @@ function App() {
       {/* CATÁLOGO FILTRADO */}
       <section className="productos">
         {productosFiltrados.map(producto => (
-          <ProductoCard key={producto.id} producto={producto} />
+          <ProductoCard
+            key={producto.id}
+            producto={producto}
+          />
         ))}
       </section>
     </main>
