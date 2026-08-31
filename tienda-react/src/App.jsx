@@ -1,9 +1,13 @@
 import { useState } from "react";
 import ProductoCard from "./components/ProductoCard";
-import { productos } from "./data/productos";
+import FormularioProducto from "./components/FormularioProducto"; // Importamos el nuevo componente
+import { productos as productosIniciales } from "./data/productos"; // Cambio Misión 2
 import "./App.css";
 
 function App() {
+  // Misión 2: Convertimos los productos en estado
+  const [productos, setProductos] = useState(productosIniciales);
+
   // Estado del buscador
   const [busqueda, setBusqueda] = useState("");
 
@@ -13,7 +17,7 @@ function App() {
   // Estado para mostrar solamente disponibles
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
-  // 1. PRIMERO FILTRAMOS LOS PRODUCTOS
+  // 1. FILTRAMOS LOS PRODUCTOS (ahora usando el estado 'productos')
   const productosFiltrados = productos.filter(producto => {
     const coincideNombre = producto.nombre
       .toLowerCase()
@@ -27,18 +31,15 @@ function App() {
     return coincideNombre && coincideCategoria && coincideStock;
   });
 
-  // 2. AHORA CALCULAMOS EL RESUMEN BASÁNDONOS EN LOS PRODUCTOS FILTRADOS
-  // Productos disponibles del inventario filtrado
+  // 2. CALCULAMOS EL RESUMEN BASÁNDONOS EN LOS PRODUCTOS FILTRADOS
   const disponibles = productosFiltrados.filter(
     producto => producto.stock > 0
   );
 
-  // Productos agotados del inventario filtrado
   const productosAgotados = productosFiltrados.filter(
     producto => producto.stock === 0
   );
 
-  // Valor total del inventario filtrado
   const valorInventario = productosFiltrados.reduce(
     (total, producto) => total + producto.precio * producto.stock,
     0
@@ -55,7 +56,12 @@ function App() {
     <main className="contenedor">
       <h1>🛒 Tienda Tecnológica</h1>
 
-      {/* RESUMEN DEL INVENTARIO (Ahora dinámico) */}
+      {/* RENDERIZAMOS EL NUEVO FORMULARIO AQUÍ */}
+      <div style={{ marginBottom: '32px', padding: '20px', background: 'white', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
+        <FormularioProducto />
+      </div>
+
+      {/* RESUMEN DEL INVENTARIO */}
       <div className="resumen-panel">
         <div className="resumen-item">
           <span className="resumen-label">Total Productos</span>
@@ -88,7 +94,6 @@ function App() {
       )}
 
       <h2>Catálogo de Productos</h2>
-      
 
       {/* BUSCADOR */}
       <input
@@ -145,7 +150,3 @@ function App() {
 }
 
 export default App;
-import { useState } from "react";
-import FormularioProducto
-from "./components/FormularioProducto";
-<FormularioProducto />
