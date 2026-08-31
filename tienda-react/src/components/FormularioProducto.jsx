@@ -1,3 +1,4 @@
+// src/components/FormularioProducto.jsx
 import { useState } from "react";
 
 function FormularioProducto({ onAgregar }) {
@@ -18,21 +19,41 @@ function FormularioProducto({ onAgregar }) {
   const manejarEnvio = (evento) => {
     evento.preventDefault();
 
+    // Validación mínima (Misión 5)
+    if (
+      !formulario.nombre.trim() ||
+      !formulario.categoria.trim() ||
+      Number(formulario.precio) <= 0 ||
+      Number(formulario.stock) < 0
+    ) {
+      alert("Revisa los datos del producto");
+      return;
+    }
+
     const nuevoProducto = {
       id: Date.now(),
       nombre: formulario.nombre,
       categoria: formulario.categoria,
       precio: Number(formulario.precio),
-      stock: Number(formulario.stock)
+      stock: Number(formulario.stock),
+      // Asignamos una imagen por defecto directamente en el código
+      imagen: "https://picsum.photos/300/200"
     };
 
     onAgregar(nuevoProducto);
+
+    // Limpiar formulario
+    setFormulario({
+      nombre: "",
+      categoria: "",
+      precio: "",
+      stock: ""
+    });
   };
 
   return (
     <form onSubmit={manejarEnvio}>
       <h2>Agregar producto</h2>
-
       <input
         type="text"
         name="nombre"
@@ -40,7 +61,6 @@ function FormularioProducto({ onAgregar }) {
         value={formulario.nombre}
         onChange={manejarCambio}
       />
-
       <input
         type="text"
         name="categoria"
@@ -48,7 +68,6 @@ function FormularioProducto({ onAgregar }) {
         value={formulario.categoria}
         onChange={manejarCambio}
       />
-
       <input
         type="number"
         name="precio"
@@ -56,7 +75,6 @@ function FormularioProducto({ onAgregar }) {
         value={formulario.precio}
         onChange={manejarCambio}
       />
-
       <input
         type="number"
         name="stock"
@@ -64,10 +82,7 @@ function FormularioProducto({ onAgregar }) {
         value={formulario.stock}
         onChange={manejarCambio}
       />
-
-      <button type="submit">
-        Agregar producto
-      </button>
+      <button type="submit">Agregar producto</button>
     </form>
   );
 }
