@@ -1,83 +1,27 @@
-function ProductoCard({ producto }) {
-  const {
-    nombre,
-    precio,
-    categoria,
-    stock,
-    imagen
-  } = producto;
+// src/components/ProductoCard.jsx
 
-  const estado =
-    stock > 0
-      ? "Disponible"
-      : "Agotado";
+// Comentario de sustentación (Misión 6): 
+// Usamos filter() en lugar de find() porque filter() genera un nuevo arreglo excluyendo el objeto eliminado, mientras que find() solo retorna la primera coincidencia sin modificar el arreglo.
 
-  const mostrarProducto = () => {
-    alert(`Seleccionaste ${nombre}`);
-  };
-
-  const formatearPrecio = (precio) => {
-    return precio.toLocaleString("es-CO");
-  };
-
+function ProductoCard({ producto, onEliminar, onModificarStock }) {
   return (
-    <article className="producto-card">
-
-      <div className="imagen-contenedor">
-        <img
-          src={imagen}
-          alt={nombre}
-          className="producto-imagen"
-        />
-
-        <span
-          className={
-            stock > 0
-              ? "badge disponible"
-              : "badge agotado"
-          }
-        >
-          {estado}
-        </span>
+    <div className="producto-card">
+      <h3>{producto.nombre}</h3>
+      <p>Categoría: {producto.categoria}</p>
+      <p>Precio: ${producto.precio}</p>
+      
+      {/* Misión 7: Botones para modificar stock */}
+      <div className="stock-control">
+        <button onClick={() => onModificarStock(producto.id, -1)}>-</button>
+        <span> Stock: {producto.stock} </span>
+        <button onClick={() => onModificarStock(producto.id, 1)}>+</button>
       </div>
 
-      <div className="producto-info">
-
-        <span className="categoria-tag">
-          {categoria}
-        </span>
-
-        <h3 className="producto-titulo">
-          {nombre}
-        </h3>
-
-        <div className="producto-footer">
-
-          <p className="producto-precio">
-            ${formatearPrecio(precio)}
-          </p>
-
-          <p className="producto-stock">
-            Stock: {stock}
-          </p>
-
-        </div>
-
-        <button
-          className="btn-comprar"
-          onClick={mostrarProducto}
-          disabled={stock === 0}
-        >
-          {
-            stock > 0
-              ? "Ver producto"
-              : "Agotado"
-          }
-        </button>
-
-      </div>
-
-    </article>
+      {/* Misión 6: Botón para eliminar */}
+      <button onClick={() => onEliminar(producto.id)}>
+        Eliminar
+      </button>
+    </div>
   );
 }
 
