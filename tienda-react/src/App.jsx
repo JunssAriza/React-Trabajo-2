@@ -88,6 +88,7 @@ function App() {
       )}
 
       <h2>Catálogo de Productos</h2>
+      
 
       {/* BUSCADOR */}
       <input
@@ -144,3 +145,7 @@ function App() {
 }
 
 export default App;
+import { useState } from "react";
+import FormularioProducto
+from "./components/FormularioProducto";
+<FormularioProducto />
