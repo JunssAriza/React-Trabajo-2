@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductoCard from "./components/ProductoCard";
 import FormularioProducto from "./components/FormularioProducto";
 import { productos as productosIniciales } from "./data/productos";
 import "./App.css";
 
 function App() {
-  const [productos, setProductos] = useState(productosIniciales);
+  const obtenerProductosIniciales = () => {
+    const guardados = localStorage.getItem("inventario");
+    if (guardados) {
+      return JSON.parse(guardados);
+    }
+    return productosIniciales;
+  };
+
+  const [productos, setProductos] = useState(obtenerProductosIniciales);
+  const [productoEditando, setProductoEditando] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "inventario",
+      JSON.stringify(productos)
+    );
+  }, [productos]);
 
   const agregarProducto = (nuevoProducto) => {
     setProductos([
@@ -33,9 +49,7 @@ function App() {
   };
 
   const [busqueda, setBusqueda] = useState("");
-
   const [categoria, setCategoria] = useState("Todas");
-
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
   const productosFiltrados = productos.filter(producto => {
@@ -73,9 +87,8 @@ function App() {
 
   return (
     <main className="contenedor">
-      <h1> Tienda Tecnológica</h1>
+      <h1>🛒 Tienda Tecnológica</h1>
 
-      {/* FORMULARIO PARA AGREGAR PRODUCTOS */}
       <div
         style={{
           marginBottom: "32px",
@@ -85,51 +98,39 @@ function App() {
           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
         }}
       >
-        <FormularioProducto
-          onAgregar={agregarProducto}
-        />
+        <FormularioProducto onAgregar={agregarProducto} />
       </div>
 
-      {/* RESUMEN DEL INVENTARIO (Misión 8) */}
+      {productoEditando && (
+        <div style={{ padding: "10px", background: "#fef3c7", borderRadius: "8px", marginBottom: "16px" }}>
+          Editando actualmente: <strong>{productoEditando.nombre}</strong>
+        </div>
+      )}
+
       <div className="resumen-panel">
         <div className="resumen-item">
-          <span className="resumen-label">
-            Total Productos
-          </span>
-          <span className="resumen-valor">
-            {productosFiltrados.length}
-          </span>
+          <span className="resumen-label">Total Productos</span>
+          <span className="resumen-valor">{productosFiltrados.length}</span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">
-            Disponibles
-          </span>
-          <span className="resumen-valor">
-            {disponibles.length}
-          </span>
+          <span className="resumen-label">Disponibles</span>
+          <span className="resumen-valor">{disponibles.length}</span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">
-            Agotados
-          </span>
-          <span className="resumen-valor">
-            {productosAgotados.length}
-          </span>
+          <span className="resumen-label">Agotados</span>
+          <span className="resumen-valor">{productosAgotados.length}</span>
         </div>
 
         <div className="resumen-item">
-          <span className="resumen-label">
-            Valor del Inventario
-          </span>
+          <span className="resumen-label">Valor del Inventario</span>
           <span className="resumen-valor">
             ${valorInventario.toLocaleString("es-CO")}
           </span>
         </div>
       </div>
 
-      {/* AVISO DE AGOTADOS */}
       {productosAgotados.length > 0 && (
         <div className="alerta-agotados">
           ⚠️ Atención: Hay productos agotados en esta búsqueda.
@@ -138,22 +139,16 @@ function App() {
 
       <h2>Catálogo de Productos</h2>
 
-      {/* BUSCADOR */}
       <input
         type="text"
         placeholder="Buscar producto..."
         value={busqueda}
-        onChange={(evento) => {
-          setBusqueda(evento.target.value);
-        }}
+        onChange={(evento) => setBusqueda(evento.target.value)}
       />
 
-      {/* FILTRO POR CATEGORÍA */}
       <select
         value={categoria}
-        onChange={(evento) =>
-          setCategoria(evento.target.value)
-        }
+        onChange={(evento) => setCategoria(evento.target.value)}
       >
         <option value="Todas">Todas</option>
         <option value="Periféricos">Periféricos</option>
@@ -163,34 +158,23 @@ function App() {
         <option value="Video">Video</option>
       </select>
 
-      {/* SOLO DISPONIBLES */}
       <label>
         <input
           type="checkbox"
           checked={soloDisponibles}
-          onChange={(evento) =>
-            setSoloDisponibles(evento.target.checked)
-          }
+          onChange={(evento) => setSoloDisponibles(evento.target.checked)}
         />
         Mostrar únicamente disponibles
       </label>
 
-      {/* BOTÓN LIMPIAR */}
-      <button onClick={limpiarFiltros}>
-        Limpiar filtros
-      </button>
+      <button onClick={limpiarFiltros}>Limpiar filtros</button>
 
-      {/* CONTADOR TEXTUAL */}
-      <p>
-        Productos encontrados: {productosFiltrados.length}
-      </p>
+      <p>Productos encontrados: {productosFiltrados.length}</p>
 
-      {/* MENSAJE SI NO HAY RESULTADOS */}
       {productosFiltrados.length === 0 ? (
         <p>No se encontraron productos.</p>
       ) : null}
 
-      {/* CATÁLOGO FILTRADO (Misiones 6 y 7 pasando props) */}
       <section className="productos">
         {productosFiltrados.map(producto => (
           <ProductoCard
@@ -198,6 +182,7 @@ function App() {
             producto={producto}
             onEliminar={eliminarProducto}
             onModificarStock={modificarStock}
+            onEditar={(p) => setProductoEditando(p)}
           />
         ))}
       </section>

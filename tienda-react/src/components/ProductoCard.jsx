@@ -1,4 +1,4 @@
-function ProductoCard({ producto, onEliminar, onModificarStock }) {
+function ProductoCard({ producto, onEliminar, onModificarStock, onEditar }) {
   const {
     id,
     nombre,
@@ -43,7 +43,6 @@ function ProductoCard({ producto, onEliminar, onModificarStock }) {
           <p className="producto-precio">${formatearPrecio(precio)}</p>
         </div>
 
-        {/* Controles de Stock (+ y -) */}
         <div className="stock-control">
           <button
             type="button"
@@ -63,14 +62,24 @@ function ProductoCard({ producto, onEliminar, onModificarStock }) {
           </button>
         </div>
 
-        {/* Botón Eliminar */}
-        <button
-          type="button"
-          className="btn-eliminar"
-          onClick={() => onEliminar(id)}
-        >
-          Eliminar
-        </button>
+        <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
+          <button
+            type="button"
+            onClick={() => onEditar(producto)}
+            style={{ flex: 1, backgroundColor: "#f59e0b", color: "white" }}
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            className="btn-eliminar"
+            onClick={() => onEliminar(id)}
+            style={{ flex: 1 }}
+          >
+            Eliminar
+          </button>
+        </div>
       </div>
     </article>
   );
