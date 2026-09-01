@@ -25,3 +25,6 @@ La aplicación ahora permite:
 - Modificar stock 
 - Calcular inventario dinámicamente 
 - Gestionar estado con useState 
+
+Mision 0 1/09/2026
+Causa: useState() únicamente guarda la información en la memoria RAM del navegador mientras la aplicación está en ejecución. Al refrescar la página, todo el árbol de componentes de React se destruye, el código JavaScript se ejecuta desde cero y el estado vuelve a inicializarse con sus datos de arranque.
