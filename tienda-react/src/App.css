@@ -30,9 +30,7 @@ h2 {
   margin: 32px 0 16px 0;
 }
 
-/* =========================================
-   1. FORMULARIO DE AGREGAR PRODUCTO (DISEÑO PREMIUM)
-   ========================================= */
+/* Formulario con degradado y neón */
 .formulario-agregar {
   display: flex;
   flex-direction: column;
@@ -120,14 +118,7 @@ h2 {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
 }
 
-.btn-agregar:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
-}
-
-/* =========================================
-   2. PANEL DE RESUMEN
-   ========================================= */
+/* Panel informativo */
 .resumen-panel {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -167,10 +158,8 @@ h2 {
   font-weight: 600;
 }
 
-/* =========================================
-   3. BUSCADOR Y FILTROS GENERALES
-   ========================================= */
-input[type="text"] {
+/* Filtros y Buscador */
+input[type="text"]:not(.campo-formulario input) {
   width: 100%;
   max-width: 500px;
   padding: 14px 18px;
@@ -184,13 +173,9 @@ input[type="text"] {
   transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
+input[type="text"]:not(.campo-formulario input):focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-}
-
-input[type="text"]::placeholder {
-  color: #999;
 }
 
 select {
@@ -205,11 +190,6 @@ select {
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
-}
-
-select:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
 }
 
 label {
@@ -237,20 +217,11 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
   margin: 10px;
 }
 
-button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar):hover {
-  background-color: #3730a3;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
-}
-
-/* =========================================
-   4. TARJETAS DE PRODUCTO (ACTUALIZADAS MISION 6 y 7)
-   ========================================= */
+/* Tarjetas */
 .productos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
-  margin-top: 20px;
 }
 
 .producto-card {
@@ -261,79 +232,126 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar):hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  border: 1px solid #e2e8f0;
 }
 
-.producto-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+.imagen-contenedor {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background-color: #f1f5f9;
 }
 
-.producto-card h3 {
-  font-size: 1.25rem;
-  color: #0f172a;
+.producto-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge.disponible {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge.agotado {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.producto-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.categoria-tag {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.producto-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
   margin-bottom: 12px;
 }
 
-.producto-card p {
-  color: #64748b;
-  margin-bottom: 8px;
-  font-weight: 500;
+.producto-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-/* Controles de Stock (+ y -) */
+.producto-precio {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Botones de Stock y Eliminar */
 .stock-control {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin: 15px 0;
+  justify-content: space-between;
   background-color: #f1f5f9;
-  padding: 10px;
+  padding: 6px 12px;
   border-radius: 8px;
+  margin-bottom: 12px;
 }
 
 .stock-control span {
-  font-weight: 700;
-  color: #0f172a;
-  font-size: 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
 }
 
-.stock-control button {
-  background-color: #e2e8f0;
-  color: #334155;
-  width: 36px;
-  height: 36px;
+.btn-control {
+  background-color: #e2e8f0 !important;
+  color: #334155 !important;
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  font-size: 1.2rem;
-  padding: 0;
-  margin: 0;
-  border: none;
 }
 
-.stock-control button:hover {
-  background-color: #cbd5e1;
-  color: #0f172a;
-  transform: scale(1.05);
+.btn-control:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-/* Botón de Eliminar */
-.producto-card > button:last-child {
-  background-color: #fee2e2;
-  color: #ef4444;
+.btn-eliminar {
+  background-color: #fee2e2 !important;
+  color: #ef4444 !important;
   width: 100%;
-  margin-top: auto;
-  padding: 12px;
+  padding: 10px !important;
+  margin: 0 !important;
   border-radius: 8px;
   font-weight: 700;
 }
 
-.producto-card > button:last-child:hover {
-  background-color: #fca5a5;
-  color: #b91c1c;
-  transform: translateY(-2px);
+.btn-eliminar:hover {
+  background-color: #fca5a5 !important;
+  color: #b91c1c !important;
 }
