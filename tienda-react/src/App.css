@@ -14,6 +14,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 16px;
+  position: relative;
 }
 
 h1 {
@@ -30,7 +31,7 @@ h2 {
   margin: 32px 0 16px 0;
 }
 
-/* Formulario con degradado y neón */
+/* FORMULARIO DE AGREGAR / EDITAR PRODUCTO */
 .formulario-agregar {
   display: flex;
   flex-direction: column;
@@ -80,7 +81,7 @@ h2 {
   font-size: 1rem;
   color: #1e293b;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 0; 
+  margin: 0;
 }
 
 .campo-formulario input:focus {
@@ -118,7 +119,11 @@ h2 {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
 }
 
-/* Panel informativo */
+.btn-agregar:active {
+  transform: translateY(1px);
+}
+
+/* PANEL DE RESUMEN DEL INVENTARIO */
 .resumen-panel {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -158,7 +163,7 @@ h2 {
   font-weight: 600;
 }
 
-/* Filtros y Buscador */
+/* BUSCADOR Y FILTROS */
 input[type="text"]:not(.campo-formulario input) {
   width: 100%;
   max-width: 500px;
@@ -192,6 +197,11 @@ select {
   transition: all 0.3s ease;
 }
 
+select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
 label {
   display: inline-flex;
   align-items: center;
@@ -211,13 +221,19 @@ button {
   transition: all 0.3s ease;
 }
 
-button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
+button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar):not(.btn-restaurar-flotante) {
   background-color: #4f46e5;
   color: white;
   margin: 10px;
 }
 
-/* Tarjetas */
+button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar):not(.btn-restaurar-flotante):hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+}
+
+/* GRILLA Y TARJETAS DE PRODUCTO */
 .productos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -228,10 +244,15 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
   background: white;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
+}
+
+.producto-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .imagen-contenedor {
@@ -304,7 +325,7 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
   color: #0f172a;
 }
 
-/* Botones de Stock y Eliminar */
+/* CONTROLES DE STOCK (+ Y -) */
 .stock-control {
   display: flex;
   align-items: center;
@@ -336,15 +357,19 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
   justify-content: center;
 }
 
+.btn-control:hover:not(:disabled) {
+  background-color: #cbd5e1 !important;
+}
+
 .btn-control:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
+/* BOTÓN ELIMINAR */
 .btn-eliminar {
   background-color: #fee2e2 !important;
   color: #ef4444 !important;
-  width: 100%;
   padding: 10px !important;
   margin: 0 !important;
   border-radius: 8px;
@@ -354,4 +379,28 @@ button:not(.btn-agregar):not(.btn-control):not(.btn-eliminar) {
 .btn-eliminar:hover {
   background-color: #fca5a5 !important;
   color: #b91c1c !important;
+}
+
+/* BOTÓN FLOTANTE RESTAURAR INVENTARIO */
+.btn-restaurar-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  margin: 0 !important;
+}
+
+.btn-restaurar-flotante:hover {
+  background-color: #1e293b !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
