@@ -131,7 +131,7 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
 
       <div className="acciones-formulario" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         <button type="submit" className="btn-agregar">
-          {productoEditando ? "💾 Guardar Cambios" : "+ Agregar producto al inventario"}
+          {productoEditando ? " Guardar Cambios" : "+ Agregar producto al inventario"}
         </button>
 
         {/* Botón para cancelar la edición si el usuario decide no modificar */}
