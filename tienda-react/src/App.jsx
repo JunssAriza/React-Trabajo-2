@@ -17,10 +17,7 @@ function App() {
   const [productoEditando, setProductoEditando] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem(
-      "inventario",
-      JSON.stringify(productos)
-    );
+    localStorage.setItem("inventario", JSON.stringify(productos));
   }, [productos]);
 
   const restaurarInventario = () => {
@@ -30,14 +27,11 @@ function App() {
   };
 
   const agregarProducto = (nuevoProducto) => {
-    setProductos([
-      ...productos,
-      nuevoProducto
-    ]);
+    setProductos([...productos, nuevoProducto]);
   };
 
   const actualizarProducto = (actualizado) => {
-    const nuevaLista = productos.map(producto =>
+    const nuevaLista = productos.map((producto) =>
       producto.id === actualizado.id ? actualizado : producto
     );
     setProductos(nuevaLista);
@@ -45,7 +39,7 @@ function App() {
   };
 
   const eliminarProducto = (id) => {
-    const nuevaLista = productos.filter(producto => producto.id !== id);
+    const nuevaLista = productos.filter((producto) => producto.id !== id);
     setProductos(nuevaLista);
     if (productoEditando && productoEditando.id === id) {
       setProductoEditando(null);
@@ -53,11 +47,11 @@ function App() {
   };
 
   const modificarStock = (id, cambio) => {
-    const nuevosProductos = productos.map(producto => {
+    const nuevosProductos = productos.map((producto) => {
       if (producto.id === id) {
         return {
           ...producto,
-          stock: Math.max(0, producto.stock + cambio)
+          stock: Math.max(0, producto.stock + cambio),
         };
       }
       return producto;
@@ -65,11 +59,14 @@ function App() {
     setProductos(nuevosProductos);
   };
 
+  // --- ESTADOS DE BÚSQUEDA, FILTROS Y ORDENAMIENTO ---
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
-  const [soloDisponibles, setSoloDisponibles] = useState(false);
+  const [filtroEstado, setFiltroEstado] = useState("todos"); // "todos", "disponibles", "agotados"
+  const [criterioOrden, setCriterioOrden] = useState("nombre-asc");
 
-  const productosFiltrados = productos.filter(producto => {
+  // 1. Filtrado de productos
+  const productosFiltrados = productos.filter((producto) => {
     const coincideNombre = producto.nombre
       .toLowerCase()
       .includes(busqueda.toLowerCase());
@@ -77,18 +74,41 @@ function App() {
     const coincideCategoria =
       categoria === "Todas" || producto.categoria === categoria;
 
-    const coincideStock =
-      !soloDisponibles || producto.stock > 0;
+    let coincideEstado = true;
+    if (filtroEstado === "disponibles") {
+      coincideEstado = producto.stock > 0;
+    } else if (filtroEstado === "agotados") {
+      coincideEstado = producto.stock === 0;
+    }
 
-    return coincideNombre && coincideCategoria && coincideStock;
+    return coincideNombre && coincideCategoria && coincideEstado;
   });
 
+  // 2. Ordenamiento sobre una copia del arreglo filtrado
+  const productosProcesados = [...productosFiltrados].sort((a, b) => {
+    switch (criterioOrden) {
+      case "nombre-asc":
+        return a.nombre.localeCompare(b.nombre);
+      case "precio-asc":
+        return a.precio - b.precio;
+      case "precio-desc":
+        return b.precio - a.precio;
+      case "stock-asc":
+        return a.stock - b.stock;
+      case "stock-desc":
+        return b.stock - a.stock;
+      default:
+        return 0;
+    }
+  });
+
+  // Cálculos para el panel resumen
   const disponibles = productosFiltrados.filter(
-    producto => producto.stock > 0
+    (producto) => producto.stock > 0
   );
 
   const productosAgotados = productosFiltrados.filter(
-    producto => producto.stock === 0
+    (producto) => producto.stock === 0
   );
 
   const valorInventario = productosFiltrados.reduce(
@@ -99,7 +119,8 @@ function App() {
   const limpiarFiltros = () => {
     setBusqueda("");
     setCategoria("Todas");
-    setSoloDisponibles(false);
+    setFiltroEstado("todos");
+    setCriterioOrden("nombre-asc");
   };
 
   return (
@@ -112,7 +133,7 @@ function App() {
           padding: "20px",
           background: "white",
           borderRadius: "12px",
-          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)",
         }}
       >
         <FormularioProducto
@@ -154,44 +175,63 @@ function App() {
 
       <h2>Catálogo de Productos</h2>
 
-      <input
-        type="text"
-        placeholder="Buscar producto..."
-        value={busqueda}
-        onChange={(evento) => setBusqueda(evento.target.value)}
-      />
-
-      <select
-        value={categoria}
-        onChange={(evento) => setCategoria(evento.target.value)}
-      >
-        <option value="Todas">Todas</option>
-        <option value="Periféricos">Periféricos</option>
-        <option value="Pantallas">Pantallas</option>
-        <option value="Audio">Audio</option>
-        <option value="Mobiliario">Mobiliario</option>
-        <option value="Video">Video</option>
-      </select>
-
-      <label>
+      <div className="controles-filtros" style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "16px" }}>
+        {/* Búsqueda por nombre */}
         <input
-          type="checkbox"
-          checked={soloDisponibles}
-          onChange={(evento) => setSoloDisponibles(evento.target.checked)}
+          type="text"
+          placeholder="Buscar producto..."
+          value={busqueda}
+          onChange={(evento) => setBusqueda(evento.target.value)}
         />
-        Mostrar únicamente disponibles
-      </label>
 
-      <button onClick={limpiarFiltros}>Limpiar filtros</button>
+        {/* Filtro por Categoría */}
+        <select
+          value={categoria}
+          onChange={(evento) => setCategoria(evento.target.value)}
+        >
+          <option value="Todas">Todas las categorías</option>
+          <option value="Periféricos">Periféricos</option>
+          <option value="Pantallas">Pantallas</option>
+          <option value="Audio">Audio</option>
+          <option value="Mobiliario">Mobiliario</option>
+          <option value="Video">Video</option>
+        </select>
 
-      <p>Productos encontrados: {productosFiltrados.length}</p>
+        {/* Filtro por Estado */}
+        <select
+          value={filtroEstado}
+          onChange={(evento) => setFiltroEstado(evento.target.value)}
+        >
+          <option value="todos">Todos los estados</option>
+          <option value="disponibles">Disponibles</option>
+          <option value="agotados">Agotados</option>
+        </select>
 
-      {productosFiltrados.length === 0 ? (
-        <p>No se encontraron productos.</p>
+        {/* Ordenamiento */}
+        <select
+          value={criterioOrden}
+          onChange={(evento) => setCriterioOrden(evento.target.value)}
+        >
+          <option value="nombre-asc">Nombre A-Z</option>
+          <option value="precio-asc">Precio: Menor a Mayor</option>
+          <option value="precio-desc">Precio: Mayor a Menor</option>
+          <option value="stock-asc">Stock: Menor a Mayor</option>
+          <option value="stock-desc">Stock: Mayor a Menor</option>
+        </select>
+
+        <button type="button" onClick={limpiarFiltros}>
+          Limpiar filtros
+        </button>
+      </div>
+
+      <p>Productos encontrados: {productosProcesados.length}</p>
+
+      {productosProcesados.length === 0 ? (
+        <p>No se encontraron productos con los criterios seleccionados.</p>
       ) : null}
 
       <section className="productos">
-        {productosFiltrados.map(producto => (
+        {productosProcesados.map((producto) => (
           <ProductoCard
             key={producto.id}
             producto={producto}
@@ -202,9 +242,9 @@ function App() {
         ))}
       </section>
 
-      <button 
-        type="button" 
-        className="btn-restaurar-flotante" 
+      <button
+        type="button"
+        className="btn-restaurar-flotante"
         onClick={restaurarInventario}
       >
         🔄 Restaurar inventario
