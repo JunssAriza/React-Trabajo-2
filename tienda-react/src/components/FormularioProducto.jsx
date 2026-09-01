@@ -1,12 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function FormularioProducto({ onAgregar }) {
+function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCancelarEdicion }) {
   const [formulario, setFormulario] = useState({
     nombre: "",
     categoria: "",
     precio: "",
     stock: ""
   });
+
+  // Misión 5 (Punto 2): Efecto que carga los datos del producto al formulario cuando cambia productoEditando
+  useEffect(() => {
+    if (productoEditando) {
+      setFormulario({
+        nombre: productoEditando.nombre,
+        categoria: productoEditando.categoria,
+        precio: productoEditando.precio,
+        stock: productoEditando.stock
+      });
+    } else {
+      setFormulario({
+        nombre: "",
+        categoria: "",
+        precio: "",
+        stock: ""
+      });
+    }
+  }, [productoEditando]);
 
   const manejarCambio = (evento) => {
     setFormulario({
@@ -18,25 +37,37 @@ function FormularioProducto({ onAgregar }) {
   const manejarEnvio = (evento) => {
     evento.preventDefault();
 
-    // Verificamos que no envíen campos vacíos
     if (!formulario.nombre || !formulario.categoria || !formulario.precio || !formulario.stock) {
       alert("Por favor, completa todos los campos");
       return;
     }
 
-    const nuevoProducto = {
-      id: Date.now(),
-      nombre: formulario.nombre,
-      categoria: formulario.categoria,
-      precio: Number(formulario.precio),
-      stock: Number(formulario.stock),
-      // Le ponemos una imagen genérica de tecnología para que la tarjeta no quede vacía
-      imagen: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80" 
-    };
+    if (productoEditando) {
+      // Misión 5 (Punto 3): Si hay un producto en edición, llamamos a onActualizar
+      const productoActualizado = {
+        ...productoEditando, // Conserva el id original y la imagen
+        nombre: formulario.nombre,
+        categoria: formulario.categoria,
+        precio: Number(formulario.precio),
+        stock: Number(formulario.stock)
+      };
 
-    onAgregar(nuevoProducto);
+      onActualizar(productoActualizado);
+    } else {
+      // Si no estamos editando, agregamos un nuevo producto
+      const nuevoProducto = {
+        id: Date.now(),
+        nombre: formulario.nombre,
+        categoria: formulario.categoria,
+        precio: Number(formulario.precio),
+        stock: Number(formulario.stock),
+        imagen: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80"
+      };
 
-    // Limpiamos las casillas automáticamente después de agregar
+      onAgregar(nuevoProducto);
+    }
+
+    // Limpiamos los campos del formulario
     setFormulario({
       nombre: "",
       categoria: "",
@@ -47,7 +78,10 @@ function FormularioProducto({ onAgregar }) {
 
   return (
     <form className="formulario-agregar" onSubmit={manejarEnvio}>
-      <h2 className="formulario-titulo">✨ Agregar Nuevo Producto</h2>
+      {/* Misión 5 (Punto 1): Título dinámico */}
+      <h2 className="formulario-titulo">
+        {productoEditando ? "✏️ Editar Producto" : "✨ Agregar Nuevo Producto"}
+      </h2>
 
       <div className="formulario-grid">
         <div className="campo-formulario">
@@ -95,9 +129,18 @@ function FormularioProducto({ onAgregar }) {
         </div>
       </div>
 
-      <button type="submit" className="btn-agregar">
-        + Agregar producto al inventario
-      </button>
+      <div className="acciones-formulario" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+        <button type="submit" className="btn-agregar">
+          {productoEditando ? "💾 Guardar Cambios" : "+ Agregar producto al inventario"}
+        </button>
+
+        {/* Botón para cancelar la edición si el usuario decide no modificar */}
+        {productoEditando && (
+          <button type="button" className="btn-cancelar" onClick={onCancelarEdicion}>
+             Cancelar Edición
+          </button>
+        )}
+      </div>
     </form>
   );
 }

@@ -30,6 +30,15 @@ function App() {
     ]);
   };
 
+  // Misión 5 (Punto 3): Función para reemplazar el producto editado en la lista
+  const actualizarProducto = (productoActualizado) => {
+    const nuevaLista = productos.map((producto) =>
+      producto.id === productoActualizado.id ? productoActualizado : producto
+    );
+    setProductos(nuevaLista);
+    setProductoEditando(null); // Resetea el formulario a modo "Agregar"
+  };
+
   const eliminarProducto = (id) => {
     const nuevaLista = productos.filter(producto => producto.id !== id);
     setProductos(nuevaLista);
@@ -98,14 +107,14 @@ function App() {
           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
         }}
       >
-        <FormularioProducto onAgregar={agregarProducto} />
+        {/* Misión 5: Formulario conectado con productoEditando y las funciones necesarias */}
+        <FormularioProducto
+          productoEditando={productoEditando}
+          onAgregar={agregarProducto}
+          onActualizar={actualizarProducto}
+          onCancelarEdicion={() => setProductoEditando(null)}
+        />
       </div>
-
-      {productoEditando && (
-        <div style={{ padding: "10px", background: "#fef3c7", borderRadius: "8px", marginBottom: "16px" }}>
-          Editando actualmente: <strong>{productoEditando.nombre}</strong>
-        </div>
-      )}
 
       <div className="resumen-panel">
         <div className="resumen-item">
