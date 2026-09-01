@@ -36,9 +36,20 @@ function App() {
     ]);
   };
 
+  const actualizarProducto = (actualizado) => {
+    const nuevaLista = productos.map(producto =>
+      producto.id === actualizado.id ? actualizado : producto
+    );
+    setProductos(nuevaLista);
+    setProductoEditando(null);
+  };
+
   const eliminarProducto = (id) => {
     const nuevaLista = productos.filter(producto => producto.id !== id);
     setProductos(nuevaLista);
+    if (productoEditando && productoEditando.id === id) {
+      setProductoEditando(null);
+    }
   };
 
   const modificarStock = (id, cambio) => {
@@ -104,14 +115,12 @@ function App() {
           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
         }}
       >
-        <FormularioProducto onAgregar={agregarProducto} />
+        <FormularioProducto
+          onAgregar={agregarProducto}
+          productoEditando={productoEditando}
+          onActualizar={actualizarProducto}
+        />
       </div>
-
-      {productoEditando && (
-        <div style={{ padding: "10px", background: "#fef3c7", borderRadius: "8px", marginBottom: "16px" }}>
-          Editando actualmente: <strong>{productoEditando.nombre}</strong>
-        </div>
-      )}
 
       <div className="resumen-panel">
         <div className="resumen-item">

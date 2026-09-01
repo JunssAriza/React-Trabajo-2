@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCancelarEdicion }) {
+function FormularioProducto({ onAgregar, productoEditando, onActualizar }) {
   const [formulario, setFormulario] = useState({
     nombre: "",
     categoria: "",
@@ -8,7 +8,6 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
     stock: ""
   });
 
-  // Misión 5 (Punto 2): Efecto que carga los datos del producto al formulario cuando cambia productoEditando
   useEffect(() => {
     if (productoEditando) {
       setFormulario({
@@ -37,24 +36,21 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
   const manejarEnvio = (evento) => {
     evento.preventDefault();
 
-    if (!formulario.nombre || !formulario.categoria || !formulario.precio || !formulario.stock) {
+    if (!formulario.nombre || !formulario.categoria || !formulario.precio || formulario.stock === "") {
       alert("Por favor, completa todos los campos");
       return;
     }
 
     if (productoEditando) {
-      // Misión 5 (Punto 3): Si hay un producto en edición, llamamos a onActualizar
       const productoActualizado = {
-        ...productoEditando, // Conserva el id original y la imagen
+        ...productoEditando,
         nombre: formulario.nombre,
         categoria: formulario.categoria,
         precio: Number(formulario.precio),
         stock: Number(formulario.stock)
       };
-
       onActualizar(productoActualizado);
     } else {
-      // Si no estamos editando, agregamos un nuevo producto
       const nuevoProducto = {
         id: Date.now(),
         nombre: formulario.nombre,
@@ -63,11 +59,9 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
         stock: Number(formulario.stock),
         imagen: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&q=80"
       };
-
       onAgregar(nuevoProducto);
     }
 
-    // Limpiamos los campos del formulario
     setFormulario({
       nombre: "",
       categoria: "",
@@ -78,7 +72,6 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
 
   return (
     <form className="formulario-agregar" onSubmit={manejarEnvio}>
-      {/* Misión 5 (Punto 1): Título dinámico */}
       <h2 className="formulario-titulo">
         {productoEditando ? "✏️ Editar Producto" : "✨ Agregar Nuevo Producto"}
       </h2>
@@ -129,18 +122,9 @@ function FormularioProducto({ productoEditando, onAgregar, onActualizar, onCance
         </div>
       </div>
 
-      <div className="acciones-formulario" style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-        <button type="submit" className="btn-agregar">
-          {productoEditando ? " Guardar Cambios" : "+ Agregar producto al inventario"}
-        </button>
-
-        {/* Botón para cancelar la edición si el usuario decide no modificar */}
-        {productoEditando && (
-          <button type="button" className="btn-cancelar" onClick={onCancelarEdicion}>
-             Cancelar Edición
-          </button>
-        )}
-      </div>
+      <button type="submit" className="btn-agregar">
+        {productoEditando ? "Guardar cambios" : "+ Agregar producto al inventario"}
+      </button>
     </form>
   );
 }
