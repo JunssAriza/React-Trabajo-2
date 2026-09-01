@@ -1,10 +1,4 @@
-// src/components/ProductoCard.jsx
-
-// Pregunta obligatoria (Misión 6):
-// Usamos filter() en lugar de find() porque filter() crea un nuevo arreglo excluyendo el objeto eliminado, mientras que find() solo retorna la primera coincidencia sin modificar el arreglo.
-
 function ProductoCard({ producto, onEliminar, onModificarStock }) {
-  // Si el producto no trae propiedad imagen en data/productos.js, usa esta por defecto:
   const imagenMostrar = producto.imagen || "https://picsum.photos/300/200";
 
   return (

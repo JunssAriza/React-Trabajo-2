@@ -5,10 +5,8 @@ import { productos as productosIniciales } from "./data/productos";
 import "./App.css";
 
 function App() {
-  // Misión 2: Convertimos los productos en estado
   const [productos, setProductos] = useState(productosIniciales);
 
-  // Misión 5: Función para agregar nuevos productos
   const agregarProducto = (nuevoProducto) => {
     setProductos([
       ...productos,
@@ -16,13 +14,11 @@ function App() {
     ]);
   };
 
-  // Misión 6: Función para eliminar producto
   const eliminarProducto = (id) => {
     const nuevaLista = productos.filter(producto => producto.id !== id);
     setProductos(nuevaLista);
   };
 
-  // Misión 7: Función para modificar el stock (evitando valores negativos)
   const modificarStock = (id, cambio) => {
     const nuevosProductos = productos.map(producto => {
       if (producto.id === id) {
@@ -36,16 +32,12 @@ function App() {
     setProductos(nuevosProductos);
   };
 
-  // Estado del buscador
   const [busqueda, setBusqueda] = useState("");
 
-  // Estado de categoría
   const [categoria, setCategoria] = useState("Todas");
 
-  // Estado para mostrar solamente disponibles
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
-  // FILTRAMOS LOS PRODUCTOS
   const productosFiltrados = productos.filter(producto => {
     const coincideNombre = producto.nombre
       .toLowerCase()
@@ -60,7 +52,6 @@ function App() {
     return coincideNombre && coincideCategoria && coincideStock;
   });
 
-  // Misión 8: TABLERO DINÁMICO (calculado dinámicamente según el estado/filtros)
   const disponibles = productosFiltrados.filter(
     producto => producto.stock > 0
   );
@@ -74,7 +65,6 @@ function App() {
     0
   );
 
-  // Limpiar todos los filtros
   const limpiarFiltros = () => {
     setBusqueda("");
     setCategoria("Todas");
@@ -83,7 +73,7 @@ function App() {
 
   return (
     <main className="contenedor">
-      <h1>🛒 Tienda Tecnológica</h1>
+      <h1> Tienda Tecnológica</h1>
 
       {/* FORMULARIO PARA AGREGAR PRODUCTOS */}
       <div
