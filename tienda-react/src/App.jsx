@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import ProductoCard from "./components/ProductoCard";
 import FormularioProducto from "./components/FormularioProducto";
+import Navbar from "./components/Navbar";
+import Inicio from "./pages/Inicio";
+import Inventario from "./pages/Inventario";
+import NuevoProducto from "./pages/NuevoProducto";
+import Acerca from "./pages/Acerca";
+import NoEncontrado from "./pages/NoEncontrado";
 import { productos as productosIniciales } from "./data/productos";
 import "./App.css";
 
@@ -59,13 +66,11 @@ function App() {
     setProductos(nuevosProductos);
   };
 
-  // --- ESTADOS DE BÚSQUEDA, FILTROS Y ORDENAMIENTO ---
   const [busqueda, setBusqueda] = useState("");
   const [categoria, setCategoria] = useState("Todas");
-  const [filtroEstado, setFiltroEstado] = useState("todos"); // "todos", "disponibles", "agotados"
+  const [filtroEstado, setFiltroEstado] = useState("todos");
   const [criterioOrden, setCriterioOrden] = useState("nombre-asc");
 
-  // 1. Filtrado de productos
   const productosFiltrados = productos.filter((producto) => {
     const coincideNombre = producto.nombre
       .toLowerCase()
@@ -84,7 +89,6 @@ function App() {
     return coincideNombre && coincideCategoria && coincideEstado;
   });
 
-  // 2. Ordenamiento sobre una copia del arreglo filtrado
   const productosProcesados = [...productosFiltrados].sort((a, b) => {
     switch (criterioOrden) {
       case "nombre-asc":
@@ -102,7 +106,6 @@ function App() {
     }
   });
 
-  // Cálculos para el panel resumen
   const disponibles = productosFiltrados.filter(
     (producto) => producto.stock > 0
   );
@@ -126,6 +129,24 @@ function App() {
   return (
     <main className="contenedor">
       <h1>🛒 Tienda Tecnológica</h1>
+
+      {/* Navegación y Rutas (Misión 3) */}
+      <Navbar />
+      
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/inventario" element={<Inventario />} />
+        <Route path="/nuevo" element={<NuevoProducto />} />
+        <Route path="/acerca" element={<Acerca />} />
+        <Route path="*" element={<NoEncontrado />} />
+      </Routes>
+
+      <hr style={{ margin: "40px 0", border: "1px dashed #cbd5e1" }} />
+      
+      {/* 
+        A CONTINUACIÓN ESTÁ LA INTERFAZ ANTIGUA.
+        En la Misión 4 moveremos toda esta sección hacia Inventario.jsx y NuevoProducto.jsx 
+      */}
 
       <div
         style={{
@@ -176,7 +197,6 @@ function App() {
       <h2>Catálogo de Productos</h2>
 
       <div className="controles-filtros" style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "16px" }}>
-        {/* Búsqueda por nombre */}
         <input
           type="text"
           placeholder="Buscar producto..."
@@ -184,7 +204,6 @@ function App() {
           onChange={(evento) => setBusqueda(evento.target.value)}
         />
 
-        {/* Filtro por Categoría */}
         <select
           value={categoria}
           onChange={(evento) => setCategoria(evento.target.value)}
@@ -197,7 +216,6 @@ function App() {
           <option value="Video">Video</option>
         </select>
 
-        {/* Filtro por Estado */}
         <select
           value={filtroEstado}
           onChange={(evento) => setFiltroEstado(evento.target.value)}
@@ -207,7 +225,6 @@ function App() {
           <option value="agotados">Agotados</option>
         </select>
 
-        {/* Ordenamiento */}
         <select
           value={criterioOrden}
           onChange={(evento) => setCriterioOrden(evento.target.value)}
