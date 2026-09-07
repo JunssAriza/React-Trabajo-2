@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Inicio from "./pages/Inicio";
 import Inventario from "./pages/Inventario";
 import NuevoProducto from "./pages/NuevoProducto";
+import DetalleProducto from "./pages/DetalleProducto";
 import Acerca from "./pages/Acerca";
 import NoEncontrado from "./pages/NoEncontrado";
 import { productos as productosIniciales } from "./data/productos";
@@ -95,6 +96,11 @@ function App() {
               onActualizar={actualizarProducto}
             />
           }
+        />
+
+        <Route 
+          path="/productos/:id" 
+          element={<DetalleProducto productos={productos} />} 
         />
 
         <Route path="/acerca" element={<Acerca />} />

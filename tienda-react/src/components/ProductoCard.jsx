@@ -1,12 +1,7 @@
+import { NavLink } from "react-router-dom";
+
 function ProductoCard({ producto, onEliminar, onModificarStock, onEditar }) {
-  const {
-    id,
-    nombre,
-    precio,
-    categoria,
-    stock,
-    imagen
-  } = producto;
+  const { id, nombre, precio, categoria, stock, imagen } = producto;
 
   const estado = stock > 0 ? "Disponible" : "Agotado";
 
@@ -27,9 +22,7 @@ function ProductoCard({ producto, onEliminar, onModificarStock, onEditar }) {
         />
 
         <span
-          className={
-            stock > 0 ? "badge disponible" : "badge agotado"
-          }
+          className={stock > 0 ? "badge disponible" : "badge agotado"}
         >
           {estado}
         </span>
@@ -80,6 +73,23 @@ function ProductoCard({ producto, onEliminar, onModificarStock, onEditar }) {
             Eliminar
           </button>
         </div>
+
+        <NavLink
+          to={`/productos/${id}`}
+          style={{
+            display: "block",
+            textAlign: "center",
+            marginTop: "12px",
+            padding: "10px",
+            backgroundColor: "#f1f5f9",
+            color: "#4f46e5",
+            textDecoration: "none",
+            fontWeight: "bold",
+            borderRadius: "8px"
+          }}
+        >
+          Ver detalle
+        </NavLink>
       </div>
     </article>
   );
